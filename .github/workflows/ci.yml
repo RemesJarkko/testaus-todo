@@ -1,11 +1,11 @@
 name: CI
 
-on: 
+on:
   push:
     branches: [testing]
   pull_request:
     branches: [testing]
-    
+
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -20,7 +20,7 @@ jobs:
           cache: 'npm'
 
       - name: Install dependencties
-        run: npm cl
+        run: npm ci
 
       - name: Run Vitest unit tests
         run: npm run test
