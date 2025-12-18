@@ -17,28 +17,37 @@ describe('Todo App - Yksikkötestit', () => {
   beforeEach(() => {
     // 2. Luodaan sovelluksen vaatima HTML-rakenne JSDOM-ympäristöön - GEMININ Luomus
     document.body.innerHTML = `
-      <h2 id="form-title">Create Task</h2>
-      <form id="task-form">
-        <input type="hidden" id="task-id">
-        <input type="text" id="topic">
-        <select id="priority">
-          <option value="low">Low</option>
-          <option value="medium">Medium</option>
-          <option value="high">High</option>
-        </select>
-        <select id="status">
-          <option value="todo">To do</option>
-          <option value="in-progress">In progress</option>
-          <option value="blocked">Blocked</option>
-          <option value="done">Done</option>
-        </select>
-        <textarea id="description"></textarea>
-        <button id="save-btn" type="submit">Save Task</button>
-        <button id="reset-btn" type="button">Reset</button>
-      </form>
-      <div id="empty-state">No tasks</div>
-      <ul id="task-list"></ul>
-    `;
+    <h2 id="form-title">Create Task</h2>
+    
+    <div class="filters">
+      <button id="pill-all">All</button>
+      <button id="pill-low">Low</button>
+      <button id="pill-medium">Medium</button>
+      <button id="pill-high">High</button>
+    </div>
+
+    <form id="task-form">
+      <input type="hidden" id="task-id">
+      <input type="text" id="topic">
+      <select id="priority">
+        <option value="low">Low</option>
+        <option value="medium">Medium</option>
+        <option value="high">High</option>
+      </select>
+      <select id="status">
+        <option value="todo">To do</option>
+        <option value="in-progress">In progress</option>
+        <option value="blocked">Blocked</option>
+        <option value="done">Done</option>
+      </select>
+      <textarea id="description"></textarea>
+      <button id="save-btn" type="submit">Save Task</button>
+      <button id="reset-btn" type="button">Reset</button>
+    </form>
+
+    <div id="empty-state">No tasks</div>
+    <ul id="task-list"></ul>
+  `;
 
     // 3. Tyhjennetään localStorage ja mockataan window-metodit - GEMININ Luomus
     localStorage.clear();
@@ -87,28 +96,37 @@ describe('Todo App - Yksikkötestit', () => {
 
     //Tehdään nämä loadit ja säädöt uudelleen, että localstoragessa on testitehtävä ennen latausta ja ne näkyisi
     document.body.innerHTML = `
-      <h2 id="form-title">Create Task</h2>
-      <form id="task-form">
-        <input type="hidden" id="task-id">
-        <input type="text" id="topic">
-        <select id="priority">
-          <option value="low">Low</option>
-          <option value="medium">Medium</option>
-          <option value="high">High</option>
-        </select>
-        <select id="status">
-          <option value="todo">To do</option>
-          <option value="in-progress">In progress</option>
-          <option value="blocked">Blocked</option>
-          <option value="done">Done</option>
-        </select>
-        <textarea id="description"></textarea>
-        <button id="save-btn" type="submit">Save Task</button>
-        <button id="reset-btn" type="button">Reset</button>
-      </form>
-      <div id="empty-state">No tasks</div>
-      <ul id="task-list"></ul>
-    `;
+    <h2 id="form-title">Create Task</h2>
+    
+    <div class="filters">
+      <button id="pill-all">All</button>
+      <button id="pill-low">Low</button>
+      <button id="pill-medium">Medium</button>
+      <button id="pill-high">High</button>
+    </div>
+
+    <form id="task-form">
+      <input type="hidden" id="task-id">
+      <input type="text" id="topic">
+      <select id="priority">
+        <option value="low">Low</option>
+        <option value="medium">Medium</option>
+        <option value="high">High</option>
+      </select>
+      <select id="status">
+        <option value="todo">To do</option>
+        <option value="in-progress">In progress</option>
+        <option value="blocked">Blocked</option>
+        <option value="done">Done</option>
+      </select>
+      <textarea id="description"></textarea>
+      <button id="save-btn" type="submit">Save Task</button>
+      <button id="reset-btn" type="button">Reset</button>
+    </form>
+
+    <div id="empty-state">No tasks</div>
+    <ul id="task-list"></ul>
+  `;
     // 4. Injektoidaan ja suoritetaan sovelluskoodi - GEMININ Luomus
     const scriptEl = document.createElement('script');
     scriptEl.textContent = scriptCode;
