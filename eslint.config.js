@@ -13,4 +13,15 @@ export default defineConfig([
   { files: ['**/*.js'], languageOptions: { sourceType: 'module' } },
   // Keep script mode for specific legacy files
   { files: ['server.js'], languageOptions: { sourceType: 'script' } },
+
+  // Cypress end-to-end tests: provide Mocha and Cypress globals
+  {
+    files: ['cypress/**/*.js', 'cypress/**/*.cy.{js,mjs,cjs}'],
+    languageOptions: {
+      globals: {
+        ...globals.mocha,
+        ...globals.cypress,
+      },
+    },
+  },
 ]);
