@@ -71,23 +71,47 @@
   const list = /** @type {HTMLUListElement} */ (
     document.getElementById('task-list')
   );
+  const pillAll = /** @type {HTMLButtonElement} */ (
+    document.getElementById('pill-all')
+  );
+  const pillLow = /** @type {HTMLButtonElement} */ (
+    document.getElementById('pill-low')
+  );
+  const pillMedium = /** @type {HTMLButtonElement} */ (
+    document.getElementById('pill-medium')
+  );
+  const pillHigh = /** @type {HTMLButtonElement} */ (
+    document.getElementById('pill-high')
+  );
   const emptyState = /** @type {HTMLElement} */ (
     document.getElementById('empty-state')
   );
 
   // State
   let tasks = loadTasks();
+  let currentFilter = 'all';
 
   // Render
   function render() {
+    // Tehtävien suodatus priorieetin mukaan. Gemini-avusteisesti lisätty oikeaan paikkaan
+    const filteredTasks = tasks.filter((taski) => {
+      if (currentFilter === 'all') return true;
+      return taski.priority === currentFilter;
+    });
+    // Asettaa napille active-luokan, jos on aktiivinen suodatin
+    [pillAll, pillLow, pillMedium, pillHigh].forEach((btn) => {
+      const filterType = btn.id.replace('pill-', '');
+      btn.classList.toggle('active', currentFilter === filterType);
+    });
     list.innerHTML = '';
-    if (!tasks.length) {
+
+    if (!filteredTasks.length) {
       emptyState.style.display = 'block';
       return;
     }
     emptyState.style.display = 'none';
 
-    tasks
+    filteredTasks
       .sort((a, b) => {
         // Not-done first, then by priority (high->low), then newest first
         if (a.completed !== b.completed) return a.completed ? 1 : -1;
@@ -185,6 +209,16 @@
     saveTasks(tasks);
     resetForm();
     render();
+  });
+
+  // Asettaa kaikille filtteri-painikkeille tapahtumakuuntelijan, jolla klikatessa vaihtaa
+  // nykyisen filtterin painikkeen id:n mukaan suodattamalla id:stä ylimääräiset pois.
+  // Geminin keksimä kikka tämä.
+  [pillAll, pillLow, pillMedium, pillHigh].forEach((pill) => {
+    pill.addEventListener('click', () => {
+      currentFilter = pill.id.replace('pill-', '');
+      render();
+    });
   });
 
   resetBtn.addEventListener('click', () => {

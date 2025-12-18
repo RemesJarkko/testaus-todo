@@ -129,6 +129,9 @@ button:disabled {
   padding: 2px 8px;
   border-radius: 999px;
 }
+.pill.all {
+  color: #666666;
+}
 .pill.low {
   color: #2b8a6e;
 }
@@ -137,6 +140,16 @@ button:disabled {
 }
 .pill.high {
   color: #c3425b;
+}
+.inactive {
+  background-color: white;
+}
+.pill.all.active,
+.pill.low.active,
+.pill.medium.active,
+.pill.high.active {
+  background-color: #e2066f;
+  color: white;
 }
 
 .task-list {

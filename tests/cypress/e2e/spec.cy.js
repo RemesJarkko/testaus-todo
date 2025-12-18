@@ -178,4 +178,74 @@ describe('Testataan todo-sovelluksen luonti, muokkaus, tilan vaihto ja poisto om
           .should('not.contain', 'Loppu');
       });
   });
+  it('Testataan uusien filtterinappien toiminta', () => {
+    //luodaan ensin tehtävä jokaisella matalalla ja korkealla prioriteetilla
+    cy.get('#topic')
+      .type('Matalan prioriteetin tehtävä')
+      .should('have.value', 'Matalan prioriteetin tehtävä');
+    cy.get('#description').type('kuvaus').should('have.value', 'kuvaus');
+    cy.get('#priority').select('low').should('have.value', 'low');
+    cy.get('#save-btn').click();
+    cy.get('#topic')
+      .type('Korkean prioriteetin tehtävä')
+      .should('have.value', 'Korkean prioriteetin tehtävä');
+    cy.get('#description').type('kuvaus').should('have.value', 'kuvaus');
+    cy.get('#priority').select('high').should('have.value', 'high');
+    cy.get('#save-btn').click();
+
+    // Valitaan filtteriksi kaikki ja varmistetaan että molemmat löytyvät
+
+    cy.get('#pill-all').click();
+    cy.get('#task-list .task').should('have.length', 2);
+
+    // Valitaan Low
+    cy.get('#pill-low').click();
+    cy.get('#task-list .task').should('have.length', 1);
+    cy.get('#task-list .task')
+      .first()
+      .within(() => {
+        cy.get('.badge').should('contain', 'Low').should('not.contain', 'High');
+      });
+    // Valitaan Medium
+    cy.get('#pill-medium').click();
+    cy.get('#task-list .task').should('have.length', 0);
+    // Valitaan High ja klikataan edit
+    cy.get('#pill-high').click();
+    cy.get('#task-list .task').should('have.length', 1);
+    cy.get('#task-list .task')
+      .first()
+      .within(() => {
+        cy.get('.badge').should('contain', 'High').should('not.contain', 'Low');
+        cy.get('button[data-action=edit]').click();
+      });
+    // Muutetaan prioriteetti Medium
+    cy.get('#priority').select('medium').should('have.value', 'medium');
+    cy.get('#save-btn').click();
+    // Tarkistetaan ettei näy enää high filtterillä tehtävä
+    cy.get('#task-list .task').should('have.length', 0);
+    // Tarkistetaan lopuksi näkyykö se Medium filtterillä
+    cy.get('#pill-medium').click();
+    cy.get('#task-list .task').should('have.length', 1);
+    cy.get('#task-list .task')
+      .first()
+      .within(() => {
+        cy.get('.badge')
+          .should('contain', 'Medium')
+          .should('not.contain', 'High')
+          .should('not.contain', 'Low');
+      });
+    // Viimeinen testi, tarkistetaan että vielä näkyy molemmat All-filtterillä
+    cy.get('#pill-all').click();
+    cy.get('#task-list .task').should('have.length', 2);
+    cy.get('#task-list .task')
+      .first()
+      .within(() => {
+        cy.get('.badge').should('contain', 'Medium');
+      });
+    cy.get('#task-list .task')
+      .last()
+      .within(() => {
+        cy.get('.badge').should('contain', 'Low');
+      });
+  });
 });
